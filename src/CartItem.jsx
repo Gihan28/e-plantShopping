@@ -32,12 +32,14 @@ const handleContinueShopping = (e) => {
   };
 
   const handleIncrement = (item) => {
-    dispatch(addItem(item));
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
-
+  
   const handleDecrement = (item) => {
     if (item.quantity > 1) {
       dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem(item.name));
     }
   };
 
@@ -46,8 +48,9 @@ const handleContinueShopping = (e) => {
   };
 
   const calculateTotalCost = (item) => {
-    const cost = parseFloat(item.cost.substring(1));
-    return (cost * item.quantity).toFixed(2);
+    const unitPrice = parseFloat(item.cost.substring(1)); // Remove "$" and convert to number
+    const subtotal = unitPrice * item.quantity;           // Multiply by quantity
+    return subtotal.toFixed(2);                           // Format to 2 decimal places
   };
 
   return (
